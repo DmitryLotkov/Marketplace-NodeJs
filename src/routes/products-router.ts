@@ -1,5 +1,7 @@
 import {Request, Response, Router} from "express";
 import {productsRepository} from "../repositories/products-repository";
+import {body} from "express-validator";
+import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
 
 export const productsRouter = Router({});
 
@@ -8,13 +10,25 @@ productsRouter.get('/', (req: Request, res: Response) => {
     res.json(foundProducts)
 })
 
-productsRouter.post('/', (req: Request, res: Response) => {
-    const newProducts = productsRepository.createProduct(req.body.title)
+const titleValidation = body('title').trim().isLength({ min: 3, max: 10 }).withMessage('title length should be form 3 to 10 symbols');
+const urlValidation = body('url').trim().isURL().withMessage('the passed string does not match the URL pattern');
+
+productsRouter.post('/',
+    titleValidation,
+    urlValidation,
+    inputValidationMiddleware,
+    (req: Request, res: Response) => {
+
+    const newProducts = productsRepository.createProduct(req.body.title, req.body.url)
     res.status(201).json(newProducts);
 })
 
-productsRouter.put('/:id', (req: Request, res: Response) => {
-    const isUpdated = productsRepository.updateProduct(+req.params.id, req.body.title);
+productsRouter.put('/:id',
+    titleValidation,
+    urlValidation,
+    inputValidationMiddleware,
+    (req: Request, res: Response) => {
+    const isUpdated = productsRepository.updateProduct(+req.params.id, req.body.title, req.body.url);
 
     if (isUpdated) {
         let product = productsRepository.getProductById(+req.params.id)

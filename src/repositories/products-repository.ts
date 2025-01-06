@@ -2,10 +2,12 @@ let products = [
     {
         id: 1,
         title: 'tomato',
+        url: "https://marketplace-nodejs.onrender.com/products/2"
     },
     {
         id: 2,
         title: 'cucumber',
+        url: 'http://4pda.ru/'
     }
 ]
 
@@ -18,12 +20,12 @@ export const productsRepository = {
         }
     },
 
-    createProduct(title: string) {
-        const newProduct = { id: +(new Date()), title }
+    createProduct(title: string, url:string) {
+        const newProduct = { id: +(new Date()), title, url }
         products.push(newProduct)
 
         if (title) {
-            return products;
+            return newProduct;
         }
     },
 
@@ -31,10 +33,11 @@ export const productsRepository = {
         return products.find((product) => product.id === id)
     },
 
-    updateProduct(id: number, title: string) {
+    updateProduct(id: number, title: string, url: string) {
         let product =  products.find((product) => product.id === id);
         if (product) {
             product.title = title;
+            product.url = url
             return true
         }
 

@@ -3,9 +3,6 @@ import {adressesRepository} from "../repositories/adresses-repository";
 
 export const adressesRouter = Router({});
 
-
-
-
 adressesRouter.get('/', (req: Request, res: Response) => {
     const allAdresses = adressesRepository.getAllAdresses()
     res.send(allAdresses)

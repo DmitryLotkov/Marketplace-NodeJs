@@ -1,4 +1,6 @@
-let products = [
+import {Product} from "./product.model";
+
+let products: Product[] = [
     {
         id: 1,
         title: 'tomato',
@@ -12,7 +14,7 @@ let products = [
 ]
 
 export const productsRepository = {
-    findProducts(title: string | null | undefined) {
+    async findProducts(title: string | null | undefined): Promise<Product[]> {
         if(title) {
             return products.filter((p) => p.title.includes(String(title)))
         } else {
@@ -20,8 +22,8 @@ export const productsRepository = {
         }
     },
 
-    createProduct(title: string, url:string) {
-        const newProduct = { id: +(new Date()), title, url }
+    async createProduct(title: string, url:string):Promise<Product | undefined> {
+        const newProduct = { id: +(new Date()), title, url } as Product
         products.push(newProduct)
 
         if (title) {
@@ -29,11 +31,11 @@ export const productsRepository = {
         }
     },
 
-    getProductById(id: number)  {
-        return products.find((product) => product.id === id)
+    async getProductById(id: number)  {
+        return products.find((product) => product.id === id);
     },
 
-    updateProduct(id: number, title: string, url: string) {
+    async updateProduct(id: number, title: string, url: string) {
         let product =  products.find((product) => product.id === id);
         if (product) {
             product.title = title;
@@ -44,7 +46,7 @@ export const productsRepository = {
         return false
     },
 
-    deleteProduct(id: number) {
+    async deleteProduct(id: number) {
         const deletedProduct = products.find((product) => product.id === id)
         products = products.filter((product) => product.id !== id);
 

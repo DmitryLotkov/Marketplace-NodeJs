@@ -8,14 +8,15 @@
   "main": "src/index.ts",
   "scripts": {
     "compile": "tsc -w",
-    "start": "nodemon --inspect dist/index.js",
+    "start": "nodemon  --inspect=127.0.0.1:9230 dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "express-validator": "^7.2.1"
+    "express-validator": "^7.2.1",
+    "mongodb": "^6.12.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

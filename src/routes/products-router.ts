@@ -1,12 +1,12 @@
 import {Request, Response, Router} from "express";
-import {productsRepository} from "../repositories/products-repository";
+import {productsRepository} from "../repositories/products-db-repository";
 import {body} from "express-validator";
 import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
 
 export const productsRouter = Router({});
 
-productsRouter.get('/', (req: Request, res: Response) => {
-    const foundProducts = productsRepository.findProducts(req.query?.title as string | undefined)
+productsRouter.get('/', async (req: Request, res: Response) => {
+    const foundProducts = await productsRepository.findProducts(req.query?.title as string | undefined)
     res.json(foundProducts)
 })
 
@@ -17,9 +17,9 @@ productsRouter.post('/',
     titleValidation,
     urlValidation,
     inputValidationMiddleware,
-    (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {
 
-    const newProducts = productsRepository.createProduct(req.body.title, req.body.url)
+    const newProducts = await productsRepository.createProduct(req.body.title, req.body.url)
     res.status(201).json(newProducts);
 })
 
@@ -27,19 +27,19 @@ productsRouter.put('/:id',
     titleValidation,
     urlValidation,
     inputValidationMiddleware,
-    (req: Request, res: Response) => {
-    const isUpdated = productsRepository.updateProduct(+req.params.id, req.body.title, req.body.url);
+    async (req: Request, res: Response) => {
+    const isUpdated = await productsRepository.updateProduct(+req.params.id, req.body.title, req.body.url);
 
     if (isUpdated) {
-        let product = productsRepository.getProductById(+req.params.id)
+        let product = await productsRepository.getProductById(+req.params.id)
         res.json(product)
     } else {
         res.sendStatus(404)
     }
 })
 
-productsRouter.get('/:id', (req: Request, res: Response) => {
-    const product = productsRepository.getProductById(+req.params.id);
+productsRouter.get('/:id', async (req: Request, res: Response) => {
+    const product = await productsRepository.getProductById(+req.params.id);
     if(product) {
         res.json(product)
     } else {
@@ -47,8 +47,8 @@ productsRouter.get('/:id', (req: Request, res: Response) => {
     }
 });
 
-productsRouter.delete('/:id', (req: Request, res: Response) => {
-    const isProductDelete = productsRepository.deleteProduct(+req.params.id)
+productsRouter.delete('/:id', async (req: Request, res: Response) => {
+    const isProductDelete = await productsRepository.deleteProduct(+req.params.id)
     if(isProductDelete) {
         res.status(204).send("Продукт успешно удален")
     } else {

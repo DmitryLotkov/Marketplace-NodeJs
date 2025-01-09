@@ -1,4 +1,5 @@
-import {Product, productCollection} from "./db";
+import {productCollection} from "./db";
+import {Product} from "./product.model";
 
 export const productsRepository = {
     async findProducts(title: string | null | undefined): Promise<Product[]> {

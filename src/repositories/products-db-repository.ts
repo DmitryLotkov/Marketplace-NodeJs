@@ -12,26 +12,22 @@ export const productsRepository = {
         return productCollection.find(filter).toArray();
     },
 
-    async createProduct(title: string, url:string): Promise<Product> {
-        const newProduct = { id: +(new Date()),
-            title,
-            url
-        } as Product
+    async createProduct(newProduct: Product): Promise<Product> {
         await productCollection.insertOne(newProduct)
 
         return newProduct
     },
 
-    async getProductById(id: number): Promise<Product | null>  {
+    async getProductById(id: string): Promise<Product | null>  {
         return await productCollection.findOne({id: id});
     },
 
-    async updateProduct(id: number, title: string, url: string) {
+    async updateProduct(id: string, title: string, url: string) {
         const result = await productCollection.updateOne({id: id}, {$set: { title: title}})
         return result.matchedCount === 1
     },
 
-    async deleteProduct(id: number) {
+    async deleteProduct(id: string) {
         const result = await productCollection.deleteOne({id: id})
         return result.deletedCount === 1;
     }

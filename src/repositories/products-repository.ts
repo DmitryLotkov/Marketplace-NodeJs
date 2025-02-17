@@ -1,3 +1,4 @@
+/*
 import {Product} from "./product.model";
 
 let products: Product[] = [
@@ -52,4 +53,4 @@ export const productsRepository = {
 
         return !!deletedProduct;
     }
-}
+}*/

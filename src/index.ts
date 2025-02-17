@@ -1,12 +1,9 @@
-import dotenv from 'dotenv';
+import 'dotenv/config'
 import express from 'express';
 import bodyParser from "body-parser";
 import {productsRouter} from "./routes/products-router";
 import {adressesRouter} from "./routes/adresses-router";
 import {runDB} from "./repositories/db";
-
-// Загружаем переменные окружения до импорта других модулей
-dotenv.config();
 
 
 const app = express()
